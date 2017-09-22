@@ -8,7 +8,7 @@ Page({
     }
 
     this.drawBall()
-    this.interval = setInterval(this.drawBall, 17)
+    this.interval = setInterval(this.drawBall.bind(this), 17)
   },
   drawBall: function () {
     var p = this.position
@@ -27,7 +27,7 @@ Page({
       p.vy = 2
     }
 
-    var context = wx.createContext()
+    var context = wx.createCanvasContext('canvas')
 
     function ball(x, y) {
       context.beginPath(0)
@@ -36,6 +36,7 @@ Page({
       context.setStrokeStyle('rgba(1,1,1,0)')
       context.fill()
       context.stroke()
+      
     }
 
     ball(p.x, 150)
@@ -47,10 +48,7 @@ Page({
     ball(p.x, 300 - p.y)
     ball(300 - p.x, p.y)
 
-    wx.drawCanvas({
-      canvasId: 'canvas',
-      actions: context.getActions()
-    })
+    context.draw()
   },
   onUnload: function () {
     clearInterval(this.interval)
